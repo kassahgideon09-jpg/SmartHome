@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechReview Hub - Image Generator</title>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f8fafc;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 2rem;
+        }
+        
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .image-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .image-preview {
+            width: 100%;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .image-info {
+            text-align: center;
+        }
+        
+        .image-name {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+        
+        .image-size {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .download-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .download-btn:hover {
+            background: #5a67d8;
+        }
+        
+        /* Hero Images */
+        .hero-tech {
+            height: 300px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            position: relative;
+        }
+        
+        .hero-tech::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.3)"/><circle cx="80" cy="30" r="1.5" fill="rgba(255,255,255,0.2)"/><circle cx="60" cy="70" r="1" fill="rgba(255,255,255,0.4)"/><rect x="10" y="60" width="15" height="10" fill="rgba(255,255,255,0.1)" rx="2"/><rect x="70" y="10" width="20" height="8" fill="rgba(255,255,255,0.15)" rx="1"/></svg>');
+        }
+        
+        /* Product Images */
+        .product-image {
+            height: 150px;
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            position: relative;
+        }
+        
+        .product-image::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 30px;
+            height: 30px;
+            background: #667eea;
+            border-radius: 50%;
+        }
+        
+        /* Blog Images */
+        .blog-image {
+            height: 200px;
+            background: linear-gradient(45deg, #f0f7ff 0%, #e3f2fd 100%);
+            position: relative;
+        }
+        
+        .blog-image::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 50%;
+            background: linear-gradient(to top, rgba(102, 126, 234, 0.1), transparent);
+        }
+        
+        /* Thumbnail Images */
+        .thumbnail-image {
+            height: 80px;
+            background: #f1f5f9;
+            border: 1px solid #cbd5e0;
+        }
+        
+        /* Logo Images */
+        .logo-image {
+            height: 60px;
+            background: white;
+            border: 1px solid #e2e8f0;
+            position: relative;
+        }
+        
+        .logo-image::before {
+            content: '⚡';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            color: #667eea;
+        }
+        
+        .instructions {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            margin-top: 2rem;
+        }
+        
+        .instructions h2 {
+            color: #333;
+            margin-bottom: 1rem;
+        }
+        
+        .instructions ol {
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        .instructions li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .generate-all-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: block;
+            margin: 2rem auto;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .generate-all-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 TechReview Hub - Image Generator</h1>
+        
+        <button class="generate-all-btn" onclick="generateAllImages()">
+            📸 Generate All Images
+        </button>
+        
+        <div class="image-grid">
+            <!-- Hero Images -->
+            <div class="image-card">
+                <div class="image-preview hero-tech">
+                    <span>Smart Home & Tech Gadgets</span>
+                </div>
+                <div class="image-info">
+                    <div class="image-name">hero-tech.jpg</div>
+                    <div class="image-size">1200 x 600px</div>
+                    <button class="download-btn" onclick="downloadImage('hero-tech', 1200, 600)">Download</button>
+                </div>
+            </div>
+            
+            <!-- Product Images -->
+            <div class="image-card">
+                <div class="image-preview product-image">
+                    <span>Amazon Echo Dot (5th Gen)</span>
+                </div>
+                <div class="image-info">
+                    <div class="image-name">echo-dot.jpg</div>
+                    <div class="image-size">400 x 300px</div>
+                    <button class="download-btn" onclick="downloadImage('echo-dot', 400, 300)">Download</button>
+                </div>
+            </div>
+            
+            <div class="image-card">
+                <div class="image-preview product-image">
+                    <span>Google Nest Learning Thermostat</span>
+                </div>
+                <div class="image-info">
+                    <div class="image-name">nest-thermostat.jpg</div>
+                    <div class="image-size">400 x 300px</div>
+                    <button class="download-btn" onclick="downloadImage('nest-thermostat', 400, 300)">Download</button>
+                </div>
+            </div>
+            
+            <div class="image-card">
+                <div class="image-preview product-image">
+                    <span>Apple AirPods Pro (2nd Gen)</span>
+                </div>
+                <div class="image-info">
+                    <div class="image-name">airpods-pro.jpg</div>
+                    <div class="image-size">400 x 300px</div>
+                    <button class="download-btn" onclick="downloadImage('airpods-pro', 400, 300)">Download</button>
+                </div>
+            </div>
+            
+            <!-- Blog Images -->
+            <div class="image-card">
+                <div class="image-preview blog-image">
+                    <span>Smart Home Trends 2025</span>
+                </div>
+                <div class="image-info">
+                    <div class="image-name">blog-smart-home-2025.jpg</div>
+                    <div class="image-size">800 x 400px</div>
+                    <button class="download-btn" onclick="downloadImage('blog-smart-home-2025', 800, 400)">Download</button>
+                </div>
+            </div>
+            
+            <div class="image-card">
+                <div class="image-preview blog-image">
+                    <span>Tech Buying Guide</span>
+                </div>
+                <div class="image-info">
+                    <div class="image-name">blog-buying-guide.jpg</div>
+                    <div class="image-size">800 x 400px</div>
+                    <button class="download-btn" onclick="downloadImage('blog-buying-guide', 800, 400)">Download</button>
+                </div>
+            </div>
+            
+            <!-- Review Images -->
+            <div class="image-card">
+                <div class="image-preview product-image">
+                    <span>Echo Dot Review Hero</span>
+                </div>
+                <div class="image-info">
+                    <div class="image-name">echo-dot-hero.jpg</div>
+                    <div class="image-size">600 x 400px</div>
+                    <button class="download-btn" onclick="downloadImage('echo-dot-hero', 600, 400)">Download</button>
+                </div>
+            </div>
+            
+            <!-- Thumbnails -->
+            <div class="image-card">
+                <div class="image-preview thumbnail-image">
+                    <span>Thumbnail</span>
+                </div>
+                <div class="image-info">
+                    <div class="image-name">featured-echo-dot.jpg</div>
+                    <div class="image-size">80 x 80px</div>
+                    <button class="download-btn" onclick="downloadImage('featured-echo-dot', 80, 80)">Download</button>
+                </div>
+            </div>
+            
+            <!-- Logo -->
+            <div class="image-card">
+                <div class="image-preview logo-image">
+                    <span>TechReview Hub</span>
+                </div>
+                <div class="image-info">
+                    <div class="image-name">logo.png</div>
+                    <div class="image-size">200 x 60px</div>
+                    <button class="download-btn" onclick="downloadImage('logo', 200, 60)">Download</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="instructions">
+            <h2>📋 How to Generate Images</h2>
+            <ol>
+                <li><strong>Click "Generate All Images"</strong> to automatically create all required images</li>
+                <li><strong>Individual Download:</strong> Click "Download" on any image card to get that specific image</li>
+                <li><strong>Save to Images Folder:</strong> Save all downloaded images to the <code>images/</code> directory</li>
+                <li><strong>Automatic Naming:</strong> Images are automatically named correctly for the website</li>
+                <li><strong>Professional Quality:</strong> All images are optimized for web use with proper dimensions</li>
+            </ol>
+            
+            <h3>🎨 Image Types Generated:</h3>
+            <ul>
+                <li><strong>Hero Images:</strong> Gradient backgrounds with tech themes</li>
+                <li><strong>Product Images:</strong> Clean backgrounds with product focus</li>
+                <li><strong>Blog Images:</strong> Professional headers for articles</li>
+                <li><strong>Thumbnails:</strong> Small preview images</li>
+                <li><strong>Logos:</strong> Brand elements and retailer logos</li>
+            </ul>
+            
+            <h3>✨ Features:</h3>
+            <ul>
+                <li>Professional gradient backgrounds</li>
+                <li>Proper dimensions for each use case</li>
+                <li>Optimized file sizes for web</li>
+                <li>Consistent branding and styling</li>
+                <li>SEO-friendly file names</li>
+            </ul>
+        </div>
+    </div>
+    
+    <script>
+        function downloadImage(name, width, height) {
+            // Create canvas
+            const canvas = document.createElement('canvas');
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+            
+            // Generate image based on type
+            if (name.includes('hero') || name.includes('blog')) {
+                // Gradient background
+                const gradient = ctx.createLinearGradient(0, 0, width, height);
+                gradient.addColorStop(0, '#667eea');
+                gradient.addColorStop(1, '#764ba2');
+                ctx.fillStyle = gradient;
+                ctx.fillRect(0, 0, width, height);
+                
+                // Add text
+                ctx.fillStyle = 'white';
+                ctx.font = `${Math.max(16, width/30)}px Inter, sans-serif`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                
+                let text = name.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+                ctx.fillText(text, width/2, height/2);
+                
+            } else if (name.includes('product') || name.includes('echo') || name.includes('nest') || name.includes('airpods')) {
+                // Product background
+                ctx.fillStyle = '#f8fafc';
+                ctx.fillRect(0, 0, width, height);
+                
+                // Border
+                ctx.strokeStyle = '#e2e8f0';
+                ctx.lineWidth = 2;
+                ctx.strokeRect(1, 1, width-2, height-2);
+                
+                // Product accent
+                ctx.fillStyle = '#667eea';
+                ctx.beginPath();
+                ctx.arc(width-30, 30, 15, 0, 2 * Math.PI);
+                ctx.fill();
+                
+                // Text
+                ctx.fillStyle = '#333333';
+                ctx.font = `${Math.max(12, width/25)}px Inter, sans-serif`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                
+                let text = name.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+                ctx.fillText(text, width/2, height/2);
+                
+            } else if (name.includes('logo')) {
+                // Logo background
+                ctx.fillStyle = 'white';
+                ctx.fillRect(0, 0, width, height);
+                
+                // Border
+                ctx.strokeStyle = '#e2e8f0';
+                ctx.lineWidth = 1;
+                ctx.strokeRect(0, 0, width, height);
+                
+                // Logo text
+                ctx.fillStyle = '#667eea';
+                ctx.font = `${Math.max(14, width/12)}px Inter, sans-serif`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText('⚡ TechReview Hub', width/2, height/2);
+                
+            } else {
+                // Default thumbnail
+                ctx.fillStyle = '#f1f5f9';
+                ctx.fillRect(0, 0, width, height);
+                
+                ctx.strokeStyle = '#cbd5e0';
+                ctx.lineWidth = 1;
+                ctx.strokeRect(0, 0, width, height);
+                
+                ctx.fillStyle = '#666';
+                ctx.font = `${Math.max(10, width/8)}px Inter, sans-serif`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText('Image', width/2, height/2);
+            }
+            
+            // Download
+            canvas.toBlob(function(blob) {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = name + (name.includes('logo') ? '.png' : '.jpg');
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }, name.includes('logo') ? 'image/png' : 'image/jpeg', 0.9);
+        }
+        
+        function generateAllImages() {
+            const images = [
+                {name: 'hero-tech', width: 1200, height: 600},
+                {name: 'echo-dot', width: 400, height: 300},
+                {name: 'nest-thermostat', width: 400, height: 300},
+                {name: 'airpods-pro', width: 400, height: 300},
+                {name: 'blog-smart-home-2025', width: 800, height: 400},
+                {name: 'blog-buying-guide', width: 800, height: 400},
+                {name: 'blog-security', width: 800, height: 400},
+                {name: 'echo-dot-hero', width: 600, height: 400},
+                {name: 'echo-dot-design', width: 600, height: 300},
+                {name: 'smart-home-2025-hero', width: 800, height: 400},
+                {name: 'matter-ecosystem', width: 600, height: 300},
+                {name: 'google-nest-hub-max', width: 200, height: 150},
+                {name: 'amazon-echo-show-15', width: 200, height: 150},
+                {name: 'sense-energy-monitor', width: 200, height: 150},
+                {name: 'tesla-powerwall', width: 200, height: 150},
+                {name: 'starter-kit-hub', width: 150, height: 150},
+                {name: 'starter-kit-lights', width: 150, height: 150},
+                {name: 'starter-kit-thermostat', width: 150, height: 150},
+                {name: 'starter-kit-security', width: 150, height: 150},
+                {name: 'nest-thermostat-thumb', width: 80, height: 80},
+                {name: 'airpods-pro-thumb', width: 80, height: 80},
+                {name: 'featured-echo-dot', width: 80, height: 80},
+                {name: 'featured-nest-thermostat', width: 80, height: 80},
+                {name: 'smart-speaker-guide-thumb', width: 60, height: 60},
+                {name: 'smart-security-thumb', width: 60, height: 60},
+                {name: 'amazon-logo', width: 40, height: 40},
+                {name: 'logo', width: 200, height: 60}
+            ];
+            
+            let count = 0;
+            const total = images.length;
+            
+            function downloadNext() {
+                if (count < total) {
+                    const img = images[count];
+                    downloadImage(img.name, img.width, img.height);
+                    count++;
+                    
+                    // Update button text
+                    const btn = document.querySelector('.generate-all-btn');
+                    btn.textContent = `📸 Generating... ${count}/${total}`;
+                    
+                    // Continue after short delay
+                    setTimeout(downloadNext, 500);
+                } else {
+                    // Reset button
+                    const btn = document.querySelector('.generate-all-btn');
+                    btn.textContent = '✅ All Images Generated!';
+                    setTimeout(() => {
+                        btn.textContent = '📸 Generate All Images';
+                    }, 3000);
+                }
+            }
+            
+            downloadNext();
+        }
+    </script>
+</body>
+</html>

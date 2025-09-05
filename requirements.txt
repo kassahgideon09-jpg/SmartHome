@@ -1,0 +1,44 @@
+# TechReview Hub AI Automation & Revenue Collection Requirements
+# Install with: pip install -r requirements.txt
+
+# Core AI functionality
+openai>=1.0.0
+
+# Task scheduling and automation
+schedule>=1.2.0
+
+# HTTP requests and API integration
+requests>=2.31.0
+
+# Web scraping and data collection
+beautifulsoup4>=4.12.0
+
+# Data handling and processing
+python-dateutil>=2.8.0
+python-dotenv>=1.0.0
+
+# Logging and monitoring
+colorlog>=6.7.0
+
+# Currency conversion and financial APIs
+forex-python>=1.8
+
+# Image processing (optional)
+Pillow>=10.0.0
+
+# Advanced features (optional)
+# selenium>=4.15.0  # For web automation
+# pandas>=2.0.0     # For data analysis
+# matplotlib>=3.7.0 # For generating charts
+
+# Payment processing APIs (optional)
+# paypalrestsdk>=1.13.3  # PayPal integration
+# stripe>=7.0.0           # Stripe integration
+
+# Mobile money APIs Africa (optional)
+# python-flutterwave>=1.0.0  # Flutterwave for mobile money
+# paystack>=1.0.2            # Paystack for payments
+
+# Notification services (optional)
+# twilio>=8.10.0     # SMS notifications
+# sendgrid>=6.10.0   # Email notifications
